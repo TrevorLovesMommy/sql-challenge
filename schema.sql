@@ -1,0 +1,142 @@
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/L4F6cO
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+
+-- How to fix permission denied error with copying table data 
+-- https://stackoverflow.com/questions/14083311/permission-denied-when-trying-to-import-a-csv-file-from-pgadmin
+
+
+CREATE TABLE "departments" (
+    "dept_no" VARCHAR   NOT NULL,
+    "dept_name" varchar(30)   NOT NULL,
+    CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_no"
+     )
+);
+
+COPY departments
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\departments.csv'
+CSV Header;
+
+SELECT * FROM departments;
+
+---------------------------------------------------------------------
+
+CREATE TABLE "dept_emp" (
+    "emp_no" INTEGER   NOT NULL,
+    "dept_no" VARCHAR   NOT NULL,
+    "from_date" DATE   NOT NULL,
+    "to_date" DATE   NOT NULL
+);
+
+
+COPY dept_emp
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\dept_emp.csv'
+CSV Header;
+
+SELECT * FROM dept_emp;
+
+---------------------------------------------------------------------
+
+CREATE TABLE "dept_manager" (
+    "dept_no" VARCHAR   NOT NULL,
+    "emp_no" INTEGER   NOT NULL,
+    "from_date" DATE   NOT NULL,
+    "to_date" DATE   NOT NULL
+);
+
+
+COPY dept_manager
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\dept_manager.csv'
+CSV Header;
+
+SELECT * FROM dept_manager;
+
+---------------------------------------------------------------------
+
+CREATE TABLE "employees" (
+    "emp_no" INTEGER   NOT NULL,
+    "birth_date" DATE   NOT NULL,
+    "first_name" VARCHAR   NOT NULL,
+    "last_name" VARCHAR   NOT NULL,
+    "gender" VARCHAR   NOT NULL,
+    "hire_date" DATE   NOT NULL,
+    CONSTRAINT "pk_employees" PRIMARY KEY (
+        "emp_no"
+     )
+);
+
+COPY employees
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\employees.csv'
+CSV Header;
+
+SELECT * FROM employees;
+--------------------------------------------------------------------
+
+CREATE TABLE "salaries" (
+    "emp_no" INTEGER   NOT NULL,
+    "salary" INTEGER   NOT NULL,
+    "from_date" DATE   NOT NULL,
+    "to_date" DATE   NOT NULL
+);
+
+COPY salaries
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\salaries.csv'
+CSV Header;
+
+SELECT * FROM salaries;
+--------------------------------------------------------------------
+
+CREATE TABLE "titles" (
+    "emp_no" INTEGER   NOT NULL,
+    "title" VARCHAR   NOT NULL,
+    "from_date" DATE   NOT NULL,
+    "to_date" DATE   NOT NULL
+);
+
+COPY titles
+FROM 'C:\Users\melis\Documents\Data Science\UCB\sql-challenge\data\titles.csv'
+CSV Header;
+
+SELECT * FROM titles;
+--------------------------------------------------------------------
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "titles" ADD CONSTRAINT "fk_titles_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+
+--List the following details of each employee: employee number, last name, first name, gender, and salary.
+SELECT employees.emp_no, employees.last_name, employees.first_name, employees.gender, salaries.salary
+FROM employees
+INNER JOIN salaries 
+ON employees.emp_no = salaries.emp_no;
+
+
+--List employees who were hired in 1986
+SELECT * 
+from employees
+WHERE hire_date >= '1986-01-01' and hire_date < '1987-01-01';
+
+--List the manager of each department with the following information: department number, department name, 
+--the manager's employee number, last name, first name, and start and end employment dates.
+SELECT departments,  
+
+
+
+
+
