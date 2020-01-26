@@ -170,7 +170,7 @@ WHERE d.dept_name = 'Sales' OR d.dept_name = 'Development';
 SELECT last_name, COUNT(last_name) as "num_last_name"
 FROM employees
 GROUP BY last_name;
-
+ 
 
 
 
